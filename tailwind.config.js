@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       colors: {
         black: '#191624',
+        'side-bar-mobile': '#121212'
       },
       animation: {
         slideup: 'slideup 1s ease-in-out',
