@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { HiOutlineHashtag, HiOutlineHome, HiOutlineMenu, HiOutlinePhotograph, HiOutlineUserGroup } from 'react-icons/hi';
+import {
+  HiOutlineHashtag,
+  HiOutlineHome,
+  HiOutlineLibrary,
+  HiOutlineMenu,
+  HiOutlinePhotograph,
+  HiOutlineUserGroup
+} from 'react-icons/hi';
 import { RiCloseLine } from 'react-icons/ri';
-// import {logo} from "../assets";
-
 import { logo } from '../assets';
 
 const links = [
@@ -11,7 +16,7 @@ const links = [
   { name: 'Around You', to: '/around-you', icon: HiOutlinePhotograph },
   { name: 'Top Artists', to: '/top-artists', icon: HiOutlineUserGroup },
   { name: 'Top Charts', to: '/top-charts', icon: HiOutlineHashtag },
-  { name: 'My Library', to: '/', icon: HiOutlineHashtag },
+  { name: 'My Library', to: '/my-library', icon: HiOutlineLibrary },
 ];
 
 const NavLinks = ({ handleClick }) => (
