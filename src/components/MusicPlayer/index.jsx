@@ -7,8 +7,9 @@ import Player from './Player';
 import Seekbar from './Seekbar';
 import Track from './Track';
 import VolumeBar from './VolumeBar';
+import {MyLibrary} from "../../pages";
 
-const MusicPlayer = () => {
+const MusicPlayer = ({ setFavoriteSongs}) => {
   const {activeSong, currentSongs, currentIndex, isActive, isPlaying} = useSelector((state) => state.player);
   const [duration, setDuration] = useState(0);
   const [seekTime, setSeekTime] = useState(0);
@@ -16,7 +17,6 @@ const MusicPlayer = () => {
   const [volume, setVolume] = useState(0.3);
   const [repeat, setRepeat] = useState(false);
   const [shuffle, setShuffle] = useState(false);
-  const [favoriteSongs, setFavoriteSongs] = useState([]);
   const dispatch = useDispatch();
 
 
@@ -64,7 +64,6 @@ const MusicPlayer = () => {
         setFavoriteSongs((prevFavorites) => [...prevFavorites, activeSong]);
       // }
     }
-    console.log(favoriteSongs)
   };
 
     return (
