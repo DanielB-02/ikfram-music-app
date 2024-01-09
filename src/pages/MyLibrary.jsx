@@ -32,7 +32,7 @@ const MyLibrary = ({ favoriteSongs }) => {
       <div className="flex flex-wrap sm:justify-start justify-center gap-8">
         {favoriteSongs?.map((song, i) => (
           <SongCard
-            key={`${i}-${song.key}`}
+            key={song.key}
             song={song}
             isPlaying={isPlaying}
             activeSong={activeSong}

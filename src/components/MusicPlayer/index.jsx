@@ -9,7 +9,7 @@ import Track from './Track';
 import VolumeBar from './VolumeBar';
 import {MyLibrary} from "../../pages";
 
-const MusicPlayer = ({ setFavoriteSongs}) => {
+const MusicPlayer = ({ setFavoriteSongs, favoriteSongs }) => {
   const {activeSong, currentSongs, currentIndex, isActive, isPlaying} = useSelector((state) => state.player);
   const [duration, setDuration] = useState(0);
   const [seekTime, setSeekTime] = useState(0);
@@ -56,13 +56,9 @@ const MusicPlayer = ({ setFavoriteSongs}) => {
 
   const setHeart = () => {
     if (activeSong) {
-      // Check if the current active song is already in the list of favorites
-      // const isAlreadyFavorite = favoriteSongs.some((song) => song.id === isActive.id);
-
-      // if (!isAlreadyFavorite) {
-        // Update the favoriteSongs state by adding the current active song to the list
+      if (!favoriteSongs.some(song => song.id === activeSong.id)) {
         setFavoriteSongs((prevFavorites) => [...prevFavorites, activeSong]);
-      // }
+      }
     }
   };
 
