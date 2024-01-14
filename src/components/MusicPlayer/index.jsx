@@ -82,6 +82,7 @@ const MusicPlayer = ({ setFavoriteSongs, favoriteSongs }) => {
         <div className="flex-1 flex flex-col items-center justify-center">
           <Controls
             isPlaying={isPlaying}
+            activeSong={activeSong}
             isActive={isActive}
             repeat={repeat}
             setRepeat={setRepeat}
@@ -92,8 +93,8 @@ const MusicPlayer = ({ setFavoriteSongs, favoriteSongs }) => {
             handlePrevSong={handlePrevSong}
             handleNextSong={handleNextSong}
             setHeart={setHeart}
-            heart={heart}
-            setFavorite={setFavorite}
+            favoriteSongs={favoriteSongs}
+            setFavoriteSongs={setFavoriteSongs}
           />
           <Seekbar
             value={appTime}
