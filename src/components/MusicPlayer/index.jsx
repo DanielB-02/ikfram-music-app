@@ -17,6 +17,7 @@ const MusicPlayer = ({ setFavoriteSongs, favoriteSongs }) => {
   const [volume, setVolume] = useState(0.3);
   const [repeat, setRepeat] = useState(false);
   const [shuffle, setShuffle] = useState(false);
+  const [heart, setHeart] = useState(false);
   const dispatch = useDispatch();
 
   // Voorbeeld-code hoe je kan reageren op een verandering in de lijst van favoriteSongs
@@ -62,10 +63,15 @@ const MusicPlayer = ({ setFavoriteSongs, favoriteSongs }) => {
     }
   };
 
-  const setHeart = () => {
+  const setFavorite = () => {
     if (activeSong) {
       if (!favoriteSongs.some(song => song.key === activeSong.key)) {
         setFavoriteSongs((prevFavorites) => [...prevFavorites, activeSong]);
+        setHeart(true);
+      } else {
+        setFavoriteSongs((prevFavorites) =>
+          prevFavorites.filter((song) => song.key !== activeSong.key));
+          setHeart(false);
       }
     }
   };
@@ -86,6 +92,8 @@ const MusicPlayer = ({ setFavoriteSongs, favoriteSongs }) => {
             handlePrevSong={handlePrevSong}
             handleNextSong={handleNextSong}
             setHeart={setHeart}
+            heart={heart}
+            setFavorite={setFavorite}
           />
           <Seekbar
             value={appTime}
