@@ -20,14 +20,6 @@ const MusicPlayer = ({ setFavoriteSongs, favoriteSongs }) => {
   const [heart, setHeart] = useState(false);
   const dispatch = useDispatch();
 
-  // Voorbeeld-code hoe je kan reageren op een verandering in de lijst van favoriteSongs
-  // ------
-  // useEffect(() => {
-  //   if (favoriteSongs.length > 0) {
-  //     console.log('Favorite songs has changed');
-  //     console.log(favoriteSongs);
-  //   }
-  // }, [favoriteSongs]);
 
   useEffect(() => {
     if (currentSongs.length) dispatch(playPause(true));
@@ -60,19 +52,6 @@ const MusicPlayer = ({ setFavoriteSongs, favoriteSongs }) => {
       dispatch(prevSong(Math.floor(Math.random() * currentSongs.length)));
     } else {
       dispatch(prevSong(currentIndex - 1));
-    }
-  };
-
-  const setFavorite = () => {
-    if (activeSong) {
-      if (!favoriteSongs.some(song => song.key === activeSong.key)) {
-        setFavoriteSongs((prevFavorites) => [...prevFavorites, activeSong]);
-        setHeart(true);
-      } else {
-        setFavoriteSongs((prevFavorites) =>
-          prevFavorites.filter((song) => song.key !== activeSong.key));
-          setHeart(false);
-      }
     }
   };
 
