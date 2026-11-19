@@ -1,16 +1,16 @@
-import {Link} from "react-router-dom";
-import React from "react";
+import { Link } from 'react-router-dom';
+import React from 'react';
 
-const ArtistImageLink = ({song}) => {
+const ArtistImageLink = ({ song }) => {
   let link;
   if ('artists' in song) {
-    link =
+    link = (
       <Link to={`/artists/${song?.artists[0].adamid}`}>
         <img src={song?.images?.background} alt="Name" className="rounded-full w-full object-cover" />
-      </Link>;
+      </Link>
+    );
   } else {
-    link =
-      <img src={song?.images?.background} alt="Name" className="rounded-full w-full object-cover" />;
+    link = <img src={song?.images?.background} alt="Name" className="rounded-full w-full object-cover" />;
   }
 
   return (
@@ -18,6 +18,6 @@ const ArtistImageLink = ({song}) => {
       {link}
     </div>
   );
-}
+};
 
 export default ArtistImageLink;
