@@ -5,8 +5,7 @@ import {
   HiOutlineHome,
   HiOutlineLibrary,
   HiOutlineMenu,
-  HiOutlinePhotograph,
-  HiOutlineUserGroup
+  HiOutlineUserGroup,
 } from 'react-icons/hi';
 import { RiCloseLine } from 'react-icons/ri';
 import { logo } from '../assets';
