@@ -1,70 +1,108 @@
-# Getting Started with Create React App
+# Ikfram Music App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A Spotify-style music web app built with React, Redux Toolkit and the Shazam Core API. Browse charts by genre, search songs and artists, read lyrics, play previews and save your favourite tracks to a personal library.
 
-## Available Scripts
+[![CI](https://github.com/DanielB-02/ikfram-music-app/actions/workflows/ci.yml/badge.svg)](https://github.com/DanielB-02/ikfram-music-app/actions/workflows/ci.yml)
 
-In the project directory, you can run:
+**Live demo:** [TODO: live demo link]
 
-### `npm start`
+[TODO: screenshot]
+<!-- Suggested capture: the Discover page with a genre selected, the Top Charts / Top Artists panel on the right and the player bar at the bottom showing a red (favourited) heart. A short GIF of hearting a song and opening My Library works even better. Save it as docs/screenshot.png and replace the line above with: ![Screenshot of the app](docs/screenshot.png) -->
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## What it does and why
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+The app lets you explore what's popular worldwide: pick a genre, see the top charts and top artists, open a song to read its lyrics and find related tracks, and play 30-second previews in a persistent player bar. I built it to practise building a real-world React front end: client-side routing, global state with Redux Toolkit, data fetching and caching with RTK Query, and a responsive Tailwind UI.
 
-### `npm test`
+The base UI follows a tutorial project ([TODO: confirm and link the tutorial, e.g. JavaScript Mastery's "Lyriks" music player]). On top of that I designed and built the **favourites / My Library** feature myself (see below).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Key features
 
-### `npm run build`
+- **Discover by genre:** world charts filtered by genre (Pop, Hip-Hop, Dance, …)
+- **Top Charts and Top Artists:** pages plus a side panel with a swipeable artist carousel
+- **Search:** songs and artists by keyword
+- **Song and artist details:** lyrics, related songs, artist top tracks
+- **Music player:** play/pause, next/previous, shuffle, repeat, seek bar and volume
+- **Favourites / My Library** *(my addition)*:
+  - heart a song from the player bar to add it to My Library
+  - click the heart again to unfavourite
+  - no duplicate entries
+  - animated add/remove transitions with Framer Motion
+- **Responsive layout:** collapsible sidebar on mobile
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Tech stack
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+| Area | Tools |
+|---|---|
+| UI | React 18, Tailwind CSS, Framer Motion, Swiper, React Icons |
+| State and data | Redux Toolkit, RTK Query |
+| Routing | React Router |
+| Build | Vite |
+| Quality | ESLint (Airbnb config), Vitest, Testing Library, GitHub Actions |
+| API | [Shazam Core](https://rapidapi.com/tipsters/api/shazam-core) via RapidAPI |
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## How it works
 
-### `npm run eject`
+```mermaid
+flowchart LR
+    UI[Pages and components] -- dispatch --> Slice[playerSlice<br/>active song, queue, play state]
+    Slice -- useSelector --> UI
+    UI -- RTK Query hooks --> API[shazamCoreApi<br/>cached queries]
+    API -- HTTPS + RapidAPI key --> Shazam[(Shazam Core API)]
+    UI -- favoriteSongs state --> Library[My Library page]
+    Player[Music player bar] -- heart toggle --> Library
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- **`src/redux/services/shazamCore.js`**: one RTK Query API slice that defines every endpoint (charts, genre charts, search, song/artist details, related songs). Responses are cached and shared between components.
+- **`src/redux/features/playerSlice.js`**: global player state. It normalises the different response shapes (plain lists, search `hits`, artist `tracks`) into a single queue so next/previous work everywhere.
+- **Favourites** live in React state in `App.jsx` and are passed to the player (heart toggle) and to the My Library page.
+- **Error and loading states** are handled per page with shared `Loader` and `Error` components.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Getting started
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+**Prerequisites:** Node.js 22+ and a free RapidAPI key with access to the [Shazam Core API](https://rapidapi.com/tipsters/api/shazam-core).
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+git clone https://github.com/DanielB-02/ikfram-music-app.git
+cd ikfram-music-app
+npm install
 
-## Learn More
+cp .env.example .env        # then add your RapidAPI key to .env
+npm run dev                 # http://localhost:5173
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+| Variable | Description |
+|---|---|
+| `VITE_SHAZAM_CORE_RAPID_API_KEY` | Your RapidAPI key for Shazam Core |
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+> **Note:** like every `VITE_*` variable, the key is embedded in the client-side bundle at build time. For a public deployment, use a key with a low quota or route requests through a small server-side proxy (see next steps).
 
-### Code Splitting
+Other scripts:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+npm run build     # production build in dist/
+npm run preview   # serve the production build locally
+npm run lint      # ESLint
+```
 
-### Analyzing the Bundle Size
+## Tests
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+npm test
+```
 
-### Making a Progressive Web App
+Vitest covers the core logic:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- `playerSlice.test.js` checks queue handling for every API response shape, next/previous navigation and play/pause.
+- `Controls.test.jsx` checks the favourites heart: add, unfavourite, and no duplicates across repeated clicks.
 
-### Advanced Configuration
+GitHub Actions runs lint, tests and a production build on every push and pull request.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## What I learned / next steps
 
-### Deployment
+- **Learned:** structuring global state with Redux Toolkit and letting RTK Query handle fetching and caching instead of hand-written `useEffect` calls. I also learned to keep API keys out of source control and to recognise when a front-end-only app can't truly hide a key.
+- **Next:** persist favourites (e.g. `localStorage` or a small backend) so My Library survives a page refresh.
+- **Next:** move API calls behind a serverless proxy so the RapidAPI key never reaches the browser, and fix the remaining accessibility lint warnings.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## License
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[TODO: choose a license, e.g. MIT, and add a LICENSE file]
